@@ -1,3 +1,5 @@
+import { SortableContext, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 import { Link, useMatch } from 'react-router-dom';
 import {
@@ -34,13 +36,15 @@ export default function Locations() {
 			}
 		>
 			<SeeMore limit={10}>
-				{locations?.map((location) => (
-					<Location
-						key={location.id}
-						location={location}
-						online={onlineLocations.some((l) => arraysEqual(location.pub_id, l))}
-					/>
-				))}
+				<SortableContext items={locations ?? []}>
+					{locations?.map((location) => (
+						<Location
+							key={location.id}
+							location={location}
+							online={onlineLocations.some((l) => arraysEqual(location.pub_id, l))}
+						/>
+					))}
+				</SortableContext>
 			</SeeMore>
 			<AddLocationButton className="mt-1" />
 		</Section>
@@ -50,6 +54,10 @@ export default function Locations() {
 const Location = ({ location, online }: { location: LocationType; online: boolean }) => {
 	const locationId = useMatch('/:libraryId/location/:locationId')?.params.locationId;
 	const [{ path }] = useExplorerSearchParams();
+
+	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+		id: location.id
+	});
 
 	const { isDroppable, className, setDroppableRef } = useExplorerDroppable({
 		id: `sidebar-location-${location.id}`,
@@ -61,27 +69,37 @@ const Location = ({ location, online }: { location: LocationType; online: boolea
 
 	return (
 		<ContextMenu locationId={location.id}>
-			<SidebarLink
-				ref={setDroppableRef}
-				to={`location/${location.id}`}
-				className={clsx(
-					'border radix-state-open:border-accent',
-					isDroppable ? 'border-accent' : 'border-transparent',
-					className
-				)}
+			<div
+				ref={setNodeRef}
+				{...attributes}
+				{...listeners}
+				style={{
+					transform: CSS.Transform.toString(transform),
+					pointerEvents: isDragging ? 'none' : undefined,
+					transition
+				}}
 			>
-				<div className="relative mr-1 shrink-0 grow-0">
-					<Icon name="Folder" size={18} />
-					<div
-						className={clsx(
-							'absolute bottom-0.5 right-0 size-1.5 rounded-full',
-							online ? 'bg-green-500' : 'bg-red-500'
-						)}
-					/>
-				</div>
-
-				<span className="truncate">{location.name}</span>
-			</SidebarLink>
+				<SidebarLink
+					ref={setDroppableRef}
+					to={`location/${location.id}`}
+					className={clsx(
+						'border radix-state-open:border-accent',
+						isDroppable || isDragging ? 'border-accent' : 'border-transparent',
+						className
+					)}
+				>
+					<div className="relative mr-1 shrink-0 grow-0">
+						<Icon name="Folder" size={18} />
+						<div
+							className={clsx(
+								'absolute bottom-0.5 right-0 size-1.5 rounded-full',
+								online ? 'bg-green-500' : 'bg-red-500'
+							)}
+						/>
+					</div>
+					<span className="truncate">{location.name}</span>
+				</SidebarLink>
+			</div>
 		</ContextMenu>
 	);
 };

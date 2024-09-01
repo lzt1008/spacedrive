@@ -108,7 +108,7 @@ export function Spacedrop({ triggerClose }: { triggerClose: () => void }) {
 
 	return (
 		<div ref={ref} className="flex h-full max-w-[300px] flex-col">
-			<div className="flex w-full flex-col items-center p-4">
+			<div className="flex flex-col items-center w-full p-4">
 				<Icon name="Spacedrop" size={56} />
 				<span className="text-lg font-bold">Spacedrop</span>
 
@@ -123,7 +123,7 @@ export function Spacedrop({ triggerClose }: { triggerClose: () => void }) {
 							<p className="text-center text-ink-faint">{t('no_nodes_found')}</p>
 						</div>
 					)}
-					<div className="flex flex-col space-y-2">
+					<div className="flex flex-col mt-2 space-y-2">
 						{Array.from(discoveredPeers).map(([id, meta]) => (
 							<Node
 								key={id}

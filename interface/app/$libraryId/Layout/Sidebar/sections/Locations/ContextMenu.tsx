@@ -50,9 +50,7 @@ export const ContextMenu = ({
 				label={t('new_location')}
 			/>
 			<CM.Item
-				onClick={() => {
-					navigate(`settings/library/locations/${locationId}`);
-				}}
+				onClick={() => navigate(`settings/library/locations/${locationId}`)}
 				icon={Pencil}
 				label={t('edit')}
 			/>
