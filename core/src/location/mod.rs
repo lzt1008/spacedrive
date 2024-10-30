@@ -281,7 +281,7 @@ impl LocationCreateArgs {
 ///
 /// It is important to note that only the indexer rule ids in this vector will be used from now on.
 /// Old rules that aren't in this vector will be purged.
-#[derive(Type, Deserialize)]
+#[derive(Type, Deserialize, Debug)]
 pub struct LocationUpdateArgs {
 	id: location::id::Type,
 	name: Option<String>,
@@ -295,6 +295,8 @@ pub struct LocationUpdateArgs {
 impl LocationUpdateArgs {
 	pub async fn update(self, node: &Node, library: &Arc<Library>) -> Result<(), LocationError> {
 		let Library { sync, db, .. } = &**library;
+
+		println!("location update args: {:?}", self);
 
 		let location = find_location(library, self.id)
 			.include(location_with_indexer_rules::include())

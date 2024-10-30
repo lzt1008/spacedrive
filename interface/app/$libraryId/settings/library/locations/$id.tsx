@@ -51,7 +51,16 @@ export const Component = () => {
 const EditLocationForm = () => {
 	const { id: locationId } = useZodRouteParams(LocationIdParamsSchema);
 	const navigate = useNavigate();
-	const fullRescan = useLibraryMutation('locations.fullRescan');
+	const fullRescan = useLibraryMutation('locations.fullRescan', {
+		onSuccess: () => {
+			toast.info({
+				title: t('reindexing_started'),
+				body: t('reindexing_location', {
+					location_name: locationId
+				})
+			});
+		}
+	});
 	const queryClient = useQueryClient();
 
 	const locationDataQuery = useLibraryQuery(['locations.getWithRules', locationId], {
@@ -68,7 +77,7 @@ const EditLocationForm = () => {
 			path: locationData?.path ?? '',
 			hidden: locationData?.hidden ?? false,
 			syncPreviewMedia: locationData?.sync_preview_media ?? false,
-			generatePreviewMedia: locationData?.generate_preview_media ?? false
+			generatePreviewMedia: locationData?.generate_preview_media ?? true
 		}
 	});
 
@@ -190,10 +199,12 @@ const EditLocationForm = () => {
 					<FlexCol>
 						<div>
 							<Button
-								onClick={() =>
-									fullRescan.mutate({
+								onClick={async () =>
+									await fullRescan.mutateAsync({
 										location_id: locationId,
-										reidentify_objects: true
+										// this will not work as true, backend issue
+										// dangerous anyway as object links will be broken
+										reidentify_objects: false
 									})
 								}
 								size="sm"

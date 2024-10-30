@@ -14,6 +14,7 @@ import { PropsWithChildren } from 'react';
 import { useLibraryMutation, useSelector } from '@sd/client';
 import { ContextMenu as CM, ModifierKeys, toast } from '@sd/ui';
 import { useLocale, useOperatingSystem } from '~/hooks';
+import useAutoReIndex from '~/hooks/useAutoReIndex';
 import { useQuickRescan } from '~/hooks/useQuickRescan';
 import { keybindForOs } from '~/util/keybinds';
 
@@ -35,7 +36,18 @@ export default (props: PropsWithChildren) => {
 	const generateThumbsForLocation = useLibraryMutation('jobs.generateThumbsForLocation');
 	// const generateLabelsForLocation = useLibraryMutation('jobs.generateLabelsForLocation');
 	const objectValidator = useLibraryMutation('jobs.objectValidator');
-	const rescanLocation = useLibraryMutation('locations.subPathRescan');
+	const rescanLocation = useLibraryMutation('locations.subPathRescan', {
+		onSuccess: () => {
+			toast.info({
+				title: t('Re-index started'),
+				body: t('Indexing has started at path: {{currentPath}}', {
+					currentPath: currentPath,
+					interpolation: { escapeValue: false }
+				})
+			});
+		}
+	});
+
 	const createFolder = useLibraryMutation(['files.createFolder'], {
 		onError: (e) => {
 			toast.error({

@@ -157,8 +157,8 @@ const EditLocationSettingsScreen = ({
 			{/* Buttons */}
 			<View style={tw`gap-y-6`}>
 				<SettingsButton
-					title="Reindex"
-					description="Perform a full rescan of this location"
+					title="Re-index"
+					description="Perform a re-index of the entire Location, this will not destroy metadata associated with the files."
 					onPress={
 						() => fullRescan.mutate({ location_id: id, reidentify_objects: false }) //FIXME: The famous serializing error for fullRescan. Keep this false until it's fixed.
 					}

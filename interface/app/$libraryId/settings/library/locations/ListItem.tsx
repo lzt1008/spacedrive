@@ -9,7 +9,7 @@ import {
 	useLibraryMutation,
 	useOnlineLocations
 } from '@sd/client';
-import { Button, buttonStyles, Card, dialogManager, Tooltip } from '@sd/ui';
+import { Button, buttonStyles, Card, dialogManager, toast, Tooltip } from '@sd/ui';
 import { Icon } from '~/components';
 import { useLocale } from '~/hooks';
 
@@ -25,7 +25,14 @@ export default ({ location }: Props) => {
 
 	const { t } = useLocale();
 
-	const fullRescan = useLibraryMutation('locations.fullRescan');
+	const fullRescan = useLibraryMutation('locations.fullRescan', {
+		onSuccess: () => {
+			toast.info({
+				title: t('Re-indexing'),
+				body: t('Full rescan of {{location}} has started', { location: location.name })
+			});
+		}
+	});
 	const onlineLocations = useOnlineLocations();
 
 	if (hide) return <></>;

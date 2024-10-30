@@ -25,6 +25,7 @@ import {
 	usePopover
 } from '@sd/ui';
 import { useLocale, useOperatingSystem } from '~/hooks';
+import useAutoReIndex from '~/hooks/useAutoReIndex';
 
 import TopBarButton from '../TopBar/TopBarButton';
 
@@ -38,8 +39,16 @@ export default function LocationOptions({ location, path }: { location: Location
 
 	const [copied, setCopied] = useState(false);
 
-	const scanLocationSubPath = useLibraryMutation('locations.subPathRescan');
-	const regenThumbs = useLibraryMutation('jobs.generateThumbsForLocation');
+	const regenThumbs = useLibraryMutation('jobs.generateThumbsForLocation', {
+		onSuccess: () => {
+			toast.info({
+				title: t('Thumbnails generating'),
+				body: t('Regenerating thumbnails for {{location}}, will skip existing ones', {
+					location: location.name
+				})
+			});
+		}
+	});
 
 	const archiveLocation = () => alert('Not implemented');
 
@@ -50,6 +59,8 @@ export default function LocationOptions({ location, path }: { location: Location
 		: currentPath;
 
 	const osPath = os === 'windows' ? currentPath?.replace(/\//g, '\\') : currentPath;
+
+	const { reIndex } = useAutoReIndex(location, path);
 
 	return (
 		<div className="opacity-30 group-hover:opacity-70">
@@ -113,17 +124,11 @@ export default function LocationOptions({ location, path }: { location: Location
 						</PopoverSection>
 						<PopoverDivider />
 						<PopoverSection>
-							<OptionButton
-								onClick={() =>
-									scanLocationSubPath.mutate({
-										location_id: location.id,
-										sub_path: path ?? ''
-									})
-								}
-							>
+							<OptionButton onClick={reIndex as any}>
 								<FolderDotted />
 								{t('reindex')}
 							</OptionButton>
+
 							<OptionButton
 								onClick={() => regenThumbs.mutate({ id: location.id, path })}
 							>
