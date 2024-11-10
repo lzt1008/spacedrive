@@ -24,7 +24,6 @@ module.exports = function (app, options) {
 				...defaultTheme.screens
 			},
 			fontFamily: {
-				sans: [...defaultTheme.fontFamily.sans],
 				plex: ['IBM Plex Sans', ...defaultTheme.fontFamily.sans]
 			},
 			fontSize: {
