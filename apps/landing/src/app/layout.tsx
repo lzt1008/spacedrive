@@ -4,7 +4,7 @@ import { PropsWithChildren } from 'react';
 import { Footer } from './Footer';
 import { NavBar } from './NavBar';
 
-import '@sd/ui/style/style.scss';
+import '@sd/ui/style';
 import '~/styles/prism.css';
 import '~/styles/style.scss';
 
