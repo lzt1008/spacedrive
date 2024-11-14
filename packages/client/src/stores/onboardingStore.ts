@@ -10,9 +10,17 @@ export enum UseCase {
 	Other = 'other'
 }
 
+export type OnboardingPage =
+	| 'prerelease'
+	| 'new-library'
+	| 'full-disk'
+	| 'locations'
+	| 'telemetry'
+	| 'creating-library';
+
 const onboardingStoreDefaults = () => ({
-	unlockedScreens: ['prerelease'],
-	lastActiveScreen: null as string | null,
+	unlockedScreens: ['prerelease'] as OnboardingPage[],
+	lastActiveScreen: null as OnboardingPage | null,
 	useCases: [] as UseCase[],
 	grantedFullDiskAccess: false,
 	data: {} as Record<string, any> | undefined,
@@ -32,11 +40,9 @@ export function resetOnboardingStore() {
 	Object.assign(onboardingStore, onboardingStoreDefaults());
 }
 
-export function unlockOnboardingScreen(key: string, unlockedScreens: string[] = []) {
+export function unlockOnboardingScreen(key: OnboardingPage) {
 	onboardingStore.lastActiveScreen = key;
-	if (unlockedScreens.includes(key)) {
-		onboardingStore.unlockedScreens = unlockedScreens;
-	} else {
-		onboardingStore.unlockedScreens = [...unlockedScreens, key];
+	if (!onboardingStore.unlockedScreens.includes(key)) {
+		onboardingStore.unlockedScreens = [...onboardingStore.unlockedScreens, key];
 	}
 }

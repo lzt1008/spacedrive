@@ -24,7 +24,7 @@ export const Component = () => {
 			<Setting
 				mini
 				toolTipLabel={t('learn_more_about_telemetry')}
-				infoUrl="https://www.spacedrive.com/docs/product/resources/privacy"
+				infoUrl="https://www.spacedrive.com/docs/company/legal/privacy"
 				title={t('telemetry_title')}
 				description={t('telemetry_description')}
 			>

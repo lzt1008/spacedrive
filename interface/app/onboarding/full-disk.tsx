@@ -5,7 +5,7 @@ import { Icon } from '~/components';
 import { useLocale } from '~/hooks';
 import { usePlatform } from '~/util/Platform';
 
-import { OnboardingContainer, OnboardingDescription, OnboardingTitle } from './components';
+import { OnboardingLayout } from './components';
 
 export const FullDisk = () => {
 	const [fdaVideo, setFdaVideo] = useState<string | null>(null);
@@ -27,39 +27,44 @@ export const FullDisk = () => {
 	});
 
 	return (
-		<OnboardingContainer>
-			<Icon name="HDD" size={80} />
-			<OnboardingTitle>{t('full_disk_access')}</OnboardingTitle>
-			<OnboardingDescription>{t('full_disk_access_description')}</OnboardingDescription>
-			<div className="mt-5 w-full max-w-[450px]">
-				{fdaVideo && (
-					<video
-						className="rounded-md"
-						autoPlay
-						loop
-						muted
-						controls={false}
-						src={fdaVideo}
-					/>
-				)}
+		<OnboardingLayout
+			title="Allow full disk access"
+			description="To enable file browsing and management, Spacedrive needs the Full Disk Access permission."
+			privacy={{
+				description:
+					"Spacedrive doesn't access files or folders that you haven't manually added or browsed to, other than its own configuration and metadata files.",
+				href: 'https://spacedrive.com/docs/company/legal/privacy',
+				hrefLabel: 'Privacy details'
+			}}
+			actions={
+				<>
+					<Button
+						variant="default"
+						size="sm"
+						onClick={() => navigate('../locations', { replace: true })}
+					>
+						{t('maybe_later')}
+					</Button>
+					<Button variant="accent" size="sm" onClick={requestFdaMacos}>
+						Continue
+					</Button>
+				</>
+			}
+		>
+			<div className="flex flex-col items-center">
+				<div className="mt-5 w-full max-w-[450px]">
+					{fdaVideo && (
+						<video
+							className="rounded-md"
+							autoPlay
+							loop
+							muted
+							controls={false}
+							src={fdaVideo}
+						/>
+					)}
+				</div>
 			</div>
-			<div className="flex items-center gap-3">
-				<Button onClick={requestFdaMacos} variant="gray" size="sm" className="my-5">
-					{t('open_settings')}
-				</Button>
-			</div>
-			<div className="flex gap-3">
-				<Button
-					onClick={() => {
-						navigate('../locations', { replace: true });
-					}}
-					variant="accent"
-					size="sm"
-					className="mt-8"
-				>
-					{t('continue')}
-				</Button>
-			</div>
-		</OnboardingContainer>
+		</OnboardingLayout>
 	);
 };

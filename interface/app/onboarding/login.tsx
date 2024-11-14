@@ -5,7 +5,7 @@ import { Button, ButtonLink, Loader } from '@sd/ui';
 import { LoginButton } from '~/components/LoginButton';
 import { useLocale } from '~/hooks';
 
-import { OnboardingContainer } from './components';
+import { OnboardingLayout } from './components';
 
 export default function OnboardingLogin() {
 	const { t } = useLocale();
@@ -16,7 +16,7 @@ export default function OnboardingLogin() {
 	// const me = useBridgeQuery(['auth.me'], { retry: false });
 
 	return (
-		<OnboardingContainer>
+		<OnboardingLayout leftSection={<div>Login Section</div>}>
 			{authState.status === 'loading' ? (
 				<Loader />
 			) : authState.status === 'loggedIn' ? (
@@ -96,6 +96,6 @@ export default function OnboardingLogin() {
 					</div>
 				</>
 			)}
-		</OnboardingContainer>
+		</OnboardingLayout>
 	);
 }

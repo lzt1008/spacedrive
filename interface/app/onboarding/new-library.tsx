@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button, Form, InputField } from '@sd/ui';
 import { Icon } from '~/components';
 import { useLocale, useOperatingSystem } from '~/hooks';
 
-import { OnboardingContainer, OnboardingDescription, OnboardingTitle } from './components';
+import { OnboardingLayout } from './components';
 import { useOnboardingContext } from './context';
 
 export default function OnboardingNewLibrary() {
@@ -14,12 +13,6 @@ export default function OnboardingNewLibrary() {
 	const os = useOperatingSystem();
 	const form = useOnboardingContext().forms.useForm('new-library');
 
-	const [importMode, setImportMode] = useState(false);
-
-	const handleImport = () => {
-		// TODO
-	};
-
 	return (
 		<Form
 			form={form}
@@ -27,48 +20,33 @@ export default function OnboardingNewLibrary() {
 				navigate(`../${os === 'macOS' ? 'full-disk' : 'locations'}`, { replace: true });
 			})}
 		>
-			<OnboardingContainer>
+			<OnboardingLayout
+				title={t('create_a_library')}
+				description={t('create_a_library_description')}
+				privacy={{
+					description: 'TODO: Library privacy description',
+					href: 'https://www.spacedrive.com/docs/company/legal/privacy'
+				}}
+				actions={
+					<Button
+						type="submit"
+						variant="accent"
+						size="sm"
+						disabled={!form.formState.isValid}
+					>
+						{t('create_a_library')}
+					</Button>
+				}
+			>
 				<Icon name="Database" size={80} />
-				<OnboardingTitle>{t('create_library')}</OnboardingTitle>
-				<OnboardingDescription>{t('create_library_description')}</OnboardingDescription>
-
-				{importMode ? (
-					<div className="mt-7 space-x-2">
-						<Button onClick={handleImport} variant="accent" size="sm">
-							{t('import')}
-						</Button>
-						<span className="px-2 text-xs font-bold text-ink-faint">{t('or')}</span>
-						<Button onClick={() => setImportMode(false)} variant="outline" size="sm">
-							{t('create_new_library')}
-						</Button>
-					</div>
-				) : (
-					<>
-						<InputField
-							{...form.register('name')}
-							size="lg"
-							autoFocus
-							className="mt-6 w-[300px]"
-							placeholder={'e.g. "James\' Library"'}
-						/>
-						<div className="flex grow" />
-						<div className="mt-7 space-x-2">
-							<Button
-								type="submit"
-								variant="accent"
-								size="sm"
-								disabled={!form.formState.isValid}
-							>
-								{t('new_library')}
-							</Button>
-							{/* <span className="px-2 text-xs font-bold text-ink-faint">OR</span>
-							<Button onClick={() => setImportMode(true)} variant="outline" size="sm">
-								Import library
-							</Button> */}
-						</div>
-					</>
-				)}
-			</OnboardingContainer>
+				<InputField
+					{...form.register('name')}
+					size="lg"
+					autoFocus
+					className="mt-6 w-[300px]"
+					placeholder={'e.g. "James\' Library"'}
+				/>
+			</OnboardingLayout>
 		</Form>
 	);
 }

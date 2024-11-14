@@ -7,7 +7,7 @@ import { FullDisk } from './full-disk';
 import Locations from './locations';
 import NewLibrary from './new-library';
 import PreRelease from './prerelease';
-import Privacy from './privacy';
+import Telemetry from './telemetry';
 
 const Index = () => {
 	const ctx = useOnboardingContext();
@@ -39,6 +39,6 @@ export default [
 	{ Component: NewLibrary, path: 'new-library' },
 	{ Component: FullDisk, path: 'full-disk' },
 	{ Component: Locations, path: 'locations' },
-	{ Component: Privacy, path: 'privacy' },
+	{ Component: Telemetry, path: 'telemetry' },
 	{ Component: CreatingLibrary, path: 'creating-library' }
 ] satisfies RouteObject[];

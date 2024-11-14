@@ -98,7 +98,7 @@ const PrivacyScreen = () => {
 			</Button>
 			<Pressable
 				onPress={() => {
-					Linking.openURL('https://www.spacedrive.com/docs/product/resources/privacy');
+					Linking.openURL('https://www.spacedrive.com/docs/company/legal/privacy');
 				}}
 				style={tw`mt-6 flex flex-row items-center justify-center`}
 			>

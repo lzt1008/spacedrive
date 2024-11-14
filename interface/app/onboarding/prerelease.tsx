@@ -1,49 +1,46 @@
-import { AlphaBg, AlphaBg_Light, AppLogo } from '@sd/assets/images';
-import { Discord } from '@sd/assets/svgs/brands';
+import { NoiseTexture } from '@sd/assets/images';
 import { Button, ButtonLink } from '@sd/ui';
 import { useIsDark, useLocale } from '~/hooks';
 import { usePlatform } from '~/util/Platform';
 
-import { OnboardingContainer } from './components';
+import { OnboardingLayout } from './components';
+import BetaNotice from './components/beta-notice';
+import { OnboardingCustomLeftSection } from './components/left-section';
 
 export default function OnboardingPreRelease() {
-	const platform = usePlatform();
-	const isDark = useIsDark();
-
 	const { t } = useLocale();
 
 	return (
-		<OnboardingContainer>
-			<div className="relative w-screen text-center">
-				<img
-					src={isDark ? AlphaBg : AlphaBg_Light}
-					alt="Spacedrive"
-					className="absolute top-[-50px] z-0 w-full"
+		<OnboardingLayout
+			customBackground="radial-gradient(95.31% 122.51% at 50% 99.93%, #FF8AF3 0%, rgba(236, 0, 255, 0.00) 100%), linear-gradient(40deg, #4203FF 32.36%, #4E07F9 43.19%, #B521D1 67.63%, #FF429F 80.78%), #111116"
+			leftSection={
+				<OnboardingCustomLeftSection
+					className="noise noise-strong bg-gradient-to-b from-[#16161D]/45 to-[#111116]/70"
+					style={{ backgroundBlendMode: 'overlay' }}
+					top={
+						<hgroup className="flex flex-col gap-3 px-3.5">
+							<h1 className="text-3xl font-bold leading-tight tracking-[-0.02em]">
+								{t('prelease_title')}
+							</h1>
+							<p className="text-base leading-[1.35] tracking-[0.04em] text-ink/80">
+								{t('prerelease_description')}
+							</p>
+						</hgroup>
+					}
+					bottom={<BetaNotice />}
 				/>
-				<div className="relative z-10 flex flex-col gap-5">
-					<div className="mb-5 flex w-full items-center justify-center gap-2">
-						<img src={AppLogo} alt="" className="size-8" />
-						<h1 className="font-plex text-[25px] font-semibold">Spacedrive</h1>
-					</div>
-					<h1 className="text-[40px] font-bold">{t('prelease_title')}</h1>
-					<p className="mx-auto w-full max-w-[450px] text-sm text-ink-faint">
-						{t('prerelease_description')}
-					</p>
-					<div className="mt-0 flex w-full items-center justify-center gap-2">
-						<Button
-							onClick={() => platform.openLink('https://discord.gg/gTaF2Z44f5')}
-							className="flex gap-2"
-							variant="gray"
-						>
-							<Discord className="size-4 fill-ink" />
-							{t('join_discord')}
-						</Button>
-						<ButtonLink to="../new-library" replace variant="accent">
-							{t('continue')}
-						</ButtonLink>
-					</div>
+			}
+			actions={
+				<ButtonLink to="../new-library" replace variant="accent">
+					{t('continue')}
+				</ButtonLink>
+			}
+		>
+			<div className="noise size-full bg-[#111116]/95">
+				<div className="flex items-center justify-center">
+					<h1>placeholder do some content here</h1>
 				</div>
 			</div>
-		</OnboardingContainer>
+		</OnboardingLayout>
 	);
 }

@@ -16,7 +16,7 @@ import { Button, Form, RadixCheckbox } from '@sd/ui';
 import { Icon, TruncatedText } from '~/components';
 import { useIsDark, useLocale, useOperatingSystem } from '~/hooks';
 
-import { OnboardingContainer, OnboardingDescription, OnboardingTitle } from './components';
+import { OnboardingLayout } from './components';
 import { useOnboardingContext } from './context';
 
 type SystemLocation = keyof SystemLocations;
@@ -89,10 +89,37 @@ export default function OnboardingLocations() {
 	return (
 		<Form
 			form={form}
-			onSubmit={form.handleSubmit(() => navigate('../privacy', { replace: true }))}
+			onSubmit={form.handleSubmit(() => navigate('../telemetry', { replace: true }))}
 			className="flex flex-col items-center"
 		>
-			<OnboardingContainer>
+			<OnboardingLayout
+				title={t('add_locations')}
+				description={t('add_location_description')}
+				privacy={{
+					description: t('add_location_privacy'),
+					href: 'https://www.spacedrive.com/docs/company/legal/privacy'
+				}}
+				actions={
+					<div className="flex gap-2">
+						<Button
+							type="button"
+							variant="default"
+							size="sm"
+							onClick={() => navigate('../telemetry', { replace: true })}
+						>
+							{t('do_this_later')}
+						</Button>
+						<Button
+							type="submit"
+							variant="accent"
+							size="sm"
+							disabled={!Object.values(locations).some(Boolean)}
+						>
+							{t('continue')}
+						</Button>
+					</div>
+				}
+			>
 				<div className="flex items-center">
 					<Icon
 						name="Folder"
@@ -106,8 +133,6 @@ export default function OnboardingLocations() {
 						className="relative left-[-25px] z-0 brightness-[0.6]"
 					/>
 				</div>
-				<OnboardingTitle>{t('add_locations')}</OnboardingTitle>
-				<OnboardingDescription>{t('add_location_description')}</OnboardingDescription>
 
 				{systemLocations && (
 					<div className="my-6">
@@ -180,11 +205,7 @@ export default function OnboardingLocations() {
 						</div>
 					</div>
 				)}
-
-				<Button type="submit" className="text-center" variant="accent" size="sm">
-					{t('continue')}
-				</Button>
-			</OnboardingContainer>
+			</OnboardingLayout>
 		</Form>
 	);
 }

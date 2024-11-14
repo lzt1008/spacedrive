@@ -62,15 +62,15 @@ const schemas = {
 	}),
 	'locations': z.object({
 		locations: z.object({
-			desktop: z.coerce.boolean(),
-			documents: z.coerce.boolean(),
-			downloads: z.coerce.boolean(),
-			pictures: z.coerce.boolean(),
-			music: z.coerce.boolean(),
-			videos: z.coerce.boolean()
+			desktop: z.coerce.boolean().default(false),
+			documents: z.coerce.boolean().default(false),
+			downloads: z.coerce.boolean().default(false),
+			pictures: z.coerce.boolean().default(false),
+			music: z.coerce.boolean().default(false),
+			videos: z.coerce.boolean().default(false)
 		})
 	}),
-	'privacy': z.object({
+	'telemetry': z.object({
 		shareTelemetry: shareTelemetry.schema
 	})
 };
@@ -84,9 +84,7 @@ const useFormState = () => {
 		defaultValues: {
 			'new-library': obStore.data?.['new-library'] ?? undefined,
 			'locations': obStore.data?.locations ?? { locations: {} },
-			'privacy': obStore.data?.privacy ?? {
-				shareTelemetry: 'minimal'
-			}
+			'telemetry': obStore.data?.telemetry ?? { shareTelemetry: 'minimal' }
 		},
 		onData: (data) => (onboardingStore.data = { ...obStore.data, ...data })
 	});
@@ -109,7 +107,7 @@ const useFormState = () => {
 
 			// opted to place this here as users could change their mind before library creation/onboarding finalization
 			// it feels more fitting to configure it here (once)
-			telemetryState.telemetryLevelPreference = data.privacy.shareTelemetry;
+			telemetryState.telemetryLevelPreference = data.telemetry.shareTelemetry;
 
 			try {
 				// show creation screen for a bit for smoothness
@@ -134,7 +132,7 @@ const useFormState = () => {
 				if (e instanceof Error) {
 					alert(`Failed to create library. Error: ${e.message}`);
 				}
-				navigate('./privacy');
+				navigate('./telemetry');
 			}
 		},
 		(key) => navigate(`./${key}`)
