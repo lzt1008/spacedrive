@@ -85,7 +85,7 @@ const useFormState = () => {
 			'new-library': obStore.data?.['new-library'] ?? undefined,
 			'locations': obStore.data?.locations ?? { locations: {} },
 			'privacy': obStore.data?.privacy ?? {
-				shareTelemetry: 'share-telemetry'
+				shareTelemetry: 'minimal'
 			}
 		},
 		onData: (data) => (onboardingStore.data = { ...obStore.data, ...data })
