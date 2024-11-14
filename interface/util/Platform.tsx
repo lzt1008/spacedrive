@@ -76,6 +76,7 @@ export type Platform = {
 	setWindowSize?(width: number, height: number): Promise<void>;
 	setFixedWindowSize?(width: number, height: number): Promise<void>;
 	unsetFixedWindowSize?(): Promise<void>;
+	setWindowResizable?(resizable: boolean): Promise<void>;
 };
 
 export type Update = { version: string };

@@ -47,29 +47,49 @@ async fn request_fda_macos() {
 // the size during onboarding. ~ilynxcat 2024/nov/14
 #[tauri::command(async)]
 #[specta::specta]
-async fn set_window_size(window: tauri::Window, width: u32, height: u32) {
+async fn set_window_size(window: tauri::Window, width: u32, height: u32) -> Result<(), String> {
 	window
-		.set_size(tauri::Size::from(LogicalSize::new(width, height)))
-		.unwrap();
+		.set_size(tauri::Size::Physical(tauri::PhysicalSize::new(
+			width, height,
+		)))
+		.map_err(|e| format!("Failed to set window size: {}", e))
 }
 
 #[tauri::command(async)]
 #[specta::specta]
-async fn set_fixed_window_size(window: tauri::Window, width: u32, height: u32) {
-	set_window_size(window.clone(), width, height).await;
+async fn set_fixed_window_size(
+	window: tauri::Window,
+	width: u32,
+	height: u32,
+) -> Result<(), String> {
+	set_window_size(window.clone(), width, height).await?;
 	window
 		.set_min_size(Some(LogicalSize::new(width, height)))
-		.unwrap();
+		.map_err(|e| format!("Failed to set min window size: {}", e))?;
 	window
 		.set_max_size(Some(LogicalSize::new(width, height)))
-		.unwrap();
+		.map_err(|e| format!("Failed to set max window size: {}", e))?;
+	Ok(())
 }
 
 #[tauri::command(async)]
 #[specta::specta]
-async fn unset_fixed_window_size(window: tauri::Window) {
-	window.set_max_size(None::<tauri::Size>).unwrap();
-	window.set_min_size(None::<tauri::Size>).unwrap();
+async fn unset_fixed_window_size(window: tauri::Window) -> Result<(), String> {
+	window
+		.set_max_size(None::<tauri::Size>)
+		.map_err(|e| format!("Failed to unset max window size: {}", e))?;
+	window
+		.set_min_size(None::<tauri::Size>)
+		.map_err(|e| format!("Failed to unset min window size: {}", e))?;
+	Ok(())
+}
+
+#[tauri::command(async)]
+#[specta::specta]
+async fn set_window_resizable(window: tauri::Window, resizable: bool) -> Result<(), String> {
+	window
+		.set_resizable(resizable)
+		.map_err(|e| format!("Failed to set window resizability: {}", e))
 }
 
 #[tauri::command(async)]
@@ -232,6 +252,7 @@ async fn main() -> tauri::Result<()> {
 			set_window_size,
 			set_fixed_window_size,
 			unset_fixed_window_size,
+			set_window_resizable,
 			open_trash_in_os_explorer,
 			file::open_file_paths,
 			file::open_ephemeral_files,

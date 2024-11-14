@@ -4,6 +4,7 @@ import { Link, useMatch, useNavigate } from 'react-router-dom';
 import { OnboardingPage, unlockOnboardingScreen, useOnboardingStore } from '@sd/client';
 import { tw } from '@sd/ui';
 import { useOperatingSystem } from '~/hooks';
+import { usePlatform } from '~/util/Platform';
 
 import { OnboardingLeftSection } from './left-section';
 import { type PrivacyDisclosureInfo } from './privacy-disclosure';
@@ -36,6 +37,31 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
 	const navigate = useNavigate();
 	const match = useMatch('/onboarding/:screen');
 	const currentScreen = match?.params?.screen as OnboardingPage | undefined;
+	const platform = usePlatform();
+
+	// set a fixed window size and disable resizing when onboarding starts (so our layout always looks good)
+	// a better solution would be to use a wholly separate window for onboarding, but that's for wayyy later
+	useEffect(() => {
+		const setupWindow = async () => {
+			try {
+				// THIS IS NOT WORKING WHYYYYYY
+				// ~ilynxcat 2024/nov/14
+				await platform.setFixedWindowSize?.(1100, 768);
+				await platform.setWindowResizable?.(false);
+			} catch (error) {
+				console.error('Failed to configure window', error);
+			}
+		};
+
+		setupWindow();
+
+		// restore window resizability when onboarding unmounts
+		return () => {
+			platform
+				.unsetFixedWindowSize?.()
+				.catch((error) => console.error('Failed to restore window', error));
+		};
+	}, [platform]);
 
 	useEffect(() => {
 		if (!currentScreen) return;

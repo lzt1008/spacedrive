@@ -41,14 +41,43 @@ export const commands = {
 	async requestFdaMacos(): Promise<void> {
 		await TAURI_INVOKE('request_fda_macos');
 	},
-	async setWindowSize(width: number, height: number): Promise<void> {
-		await TAURI_INVOKE('set_window_size', { width, height });
+	async setWindowSize(width: number, height: number): Promise<Result<null, string>> {
+		try {
+			return { status: 'ok', data: await TAURI_INVOKE('set_window_size', { width, height }) };
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: 'error', error: e as any };
+		}
 	},
-	async setFixedWindowSize(width: number, height: number): Promise<void> {
-		await TAURI_INVOKE('set_fixed_window_size', { width, height });
+	async setFixedWindowSize(width: number, height: number): Promise<Result<null, string>> {
+		try {
+			return {
+				status: 'ok',
+				data: await TAURI_INVOKE('set_fixed_window_size', { width, height })
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: 'error', error: e as any };
+		}
 	},
-	async unsetFixedWindowSize(): Promise<void> {
-		await TAURI_INVOKE('unset_fixed_window_size');
+	async unsetFixedWindowSize(): Promise<Result<null, string>> {
+		try {
+			return { status: 'ok', data: await TAURI_INVOKE('unset_fixed_window_size') };
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: 'error', error: e as any };
+		}
+	},
+	async setWindowResizable(resizable: boolean): Promise<Result<null, string>> {
+		try {
+			return {
+				status: 'ok',
+				data: await TAURI_INVOKE('set_window_resizable', { resizable })
+			};
+		} catch (e) {
+			if (e instanceof Error) throw e;
+			else return { status: 'error', error: e as any };
+		}
 	},
 	async openTrashInOsExplorer(): Promise<Result<null, null>> {
 		try {
