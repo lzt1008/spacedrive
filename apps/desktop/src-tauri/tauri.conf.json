@@ -15,8 +15,8 @@
 			{
 				"title": "Spacedrive",
 				"hiddenTitle": true,
-				"width": 1400,
-				"height": 750,
+				"width": 1100,
+				"height": 768,
 				"minWidth": 768,
 				"minHeight": 500,
 				"resizable": true,
