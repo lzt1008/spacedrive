@@ -39,6 +39,7 @@ import { RootContext } from './RootContext';
 
 import './style.scss';
 
+import { NoiseTexture } from '@sd/assets/images';
 import { useZodRouteParams } from '~/hooks';
 
 import { useP2PErrorToast } from './p2p';
@@ -63,15 +64,23 @@ export const createRoutes = (platform: Platform) =>
 
 				return (
 					<RootContext.Provider value={{ rawPath }}>
-						{useFeatureFlag('debugDragAndDrop') ? <DragAndDropDebug /> : null}
-						{useFeatureFlag('solidJsDemo') ? (
-							<WithSolid root={Demo} demo="123" />
-						) : null}
-						{useFeatureFlag('solidJsDemo') ? <WithSolid root={Demo2} /> : null}
-						<Outlet />
-						<Dialogs />
-						<Toaster position="bottom-right" expand={true} offset={18} />
-						<P2PErrorToast />
+						<div
+							className="contents antialiased"
+							style={{
+								// @ts-expect-error this is a variable definition but ts won't allow it
+								'--noise-texture': `url('${NoiseTexture}')`
+							}}
+						>
+							{useFeatureFlag('debugDragAndDrop') ? <DragAndDropDebug /> : null}
+							{useFeatureFlag('solidJsDemo') ? (
+								<WithSolid root={Demo} demo="123" />
+							) : null}
+							{useFeatureFlag('solidJsDemo') ? <WithSolid root={Demo2} /> : null}
+							<Outlet />
+							<Dialogs />
+							<Toaster position="bottom-right" expand={true} offset={18} />
+							<P2PErrorToast />
+						</div>
 					</RootContext.Provider>
 				);
 			},

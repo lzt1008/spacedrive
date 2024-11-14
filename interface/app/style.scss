@@ -1,4 +1,4 @@
-a,
+a:not(.cursor-pointer),
 button {
 	cursor: default !important;
 }
@@ -6,12 +6,9 @@ button {
 body {
 	@apply cursor-default;
 	-webkit-user-select: none;
-	font: caption;
-	font-size: 1rem;
-}
-
-.app-background {
-	@apply bg-app;
+	user-select: none;
+	font: caption; // use the system default UI font
+	font-size: 1rem; // reset the font size but keep the other settings from `font: caption;`
 }
 
 .frame::before {

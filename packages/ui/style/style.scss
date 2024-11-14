@@ -63,3 +63,58 @@
 [type='button'] {
 	-webkit-appearance: none;
 }
+
+@layer utilities {
+	.noise {
+		--noise-size: 512px;
+		--noise-opacity: 15%;
+
+		position: relative;
+		z-index: 1;
+	}
+
+	.noise::before {
+		z-index: -1;
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: var(--noise-opacity);
+		content: '';
+		mix-blend-mode: overlay;
+		width: 100%;
+		height: 100%;
+		background-blend-mode: overlay;
+		background-image: var(--noise-texture);
+		background-attachment: scroll;
+		background-repeat: repeat;
+		background-size: var(--noise-size) var(--noise-size);
+	}
+
+	.noise-faded {
+		--noise-opacity: 7%;
+	}
+
+	.noise-regular {
+		--noise-opacity: 15%;
+	}
+
+	.noise-strong {
+		--noise-opacity: 25%;
+	}
+
+	.noise-stronger {
+		--noise-opacity: 35%;
+	}
+
+	.noise-strongest {
+		--noise-opacity: 40%;
+	}
+
+	.noise-sm {
+		--noise-size: 256px;
+	}
+
+	.noise-lg {
+		--noise-size: 1024px;
+	}
+}

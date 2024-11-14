@@ -42,17 +42,17 @@ module.exports = function (app, options) {
 			},
 			extend: {
 				colors: {
-					accent: {
+					'accent': {
 						DEFAULT: alpha('--color-accent'),
 						faint: alpha('--color-accent-faint'),
 						deep: alpha('--color-accent-deep')
 					},
-					ink: {
+					'ink': {
 						DEFAULT: alpha('--color-ink'),
 						dull: alpha('--color-ink-dull'),
 						faint: alpha('--color-ink-faint')
 					},
-					sidebar: {
+					'sidebar': {
 						DEFAULT: alpha('--color-sidebar'),
 						box: alpha('--color-sidebar-box'),
 						line: alpha('--color-sidebar-line'),
@@ -64,7 +64,7 @@ module.exports = function (app, options) {
 						selected: alpha('--color-sidebar-selected'),
 						shade: alpha('--color-sidebar-shade')
 					},
-					app: {
+					'app': {
 						DEFAULT: alpha('--color-app'),
 						box: alpha('--color-app-box'),
 						darkBox: alpha('--color-app-dark-box'),
@@ -85,7 +85,7 @@ module.exports = function (app, options) {
 						slider: alpha('--color-app-slider'),
 						explorerScrollbar: alpha('--color-app-explorer-scrollbar')
 					},
-					menu: {
+					'menu': {
 						DEFAULT: alpha('--color-menu'),
 						line: alpha('--color-menu-line'),
 						hover: alpha('--color-menu-hover'),
@@ -95,7 +95,7 @@ module.exports = function (app, options) {
 						faint: alpha('--color-menu-faint')
 					},
 					// legacy support
-					primary: {
+					'primary': {
 						DEFAULT: '#2599FF',
 						50: '#FFFFFF',
 						100: '#F1F8FF',
@@ -108,7 +108,7 @@ module.exports = function (app, options) {
 						800: '#004A8B',
 						900: '#002F58'
 					},
-					gray: {
+					'gray': {
 						DEFAULT: '#505468',
 						50: '#F1F1F4',
 						100: '#E8E9ED',
@@ -129,6 +129,34 @@ module.exports = function (app, options) {
 						850: '#08090D',
 						900: '#060609',
 						950: '#030303'
+					},
+					'pastel-yellow': {
+						DEFAULT: 'hsl(40, 97%, 85%)',
+						50: 'hsl(40, 97%, 95%)',
+						100: 'hsl(40, 97%, 90%)',
+						200: 'hsl(40, 97%, 85%)', // Base color
+						300: 'hsl(40, 97%, 80%)',
+						400: 'hsl(40, 97%, 75%)',
+						500: 'hsl(40, 97%, 70%)',
+						600: 'hsl(40, 97%, 65%)',
+						700: 'hsl(40, 97%, 60%)',
+						800: 'hsl(40, 97%, 55%)',
+						900: 'hsl(40, 97%, 50%)',
+						950: 'hsl(40, 97%, 45%)'
+					},
+					'pastel-blue': {
+						DEFAULT: 'hsl(216, 100%, 73%)',
+						50: 'hsl(216, 100%, 95%)',
+						100: 'hsl(216, 100%, 90%)',
+						200: 'hsl(216, 100%, 85%)',
+						300: 'hsl(216, 100%, 80%)',
+						400: 'hsl(216, 100%, 76%)',
+						500: 'hsl(216, 100%, 73%)', // Base color
+						600: 'hsl(216, 100%, 68%)',
+						700: 'hsl(216, 100%, 63%)',
+						800: 'hsl(216, 100%, 58%)',
+						900: 'hsl(216, 100%, 53%)',
+						950: 'hsl(216, 100%, 48%)'
 					}
 				},
 				extend: {
