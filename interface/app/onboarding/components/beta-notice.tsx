@@ -16,7 +16,8 @@ export default function BetaNotice() {
 				While we are still working to build a polished experience, please report any issues
 				encountered with{' '}
 				<span className="inline-flex items-baseline gap-x-1 text-white">
-					<PaperPlaneTilt size={16} weight="bold" className="size-4 self-center" /> Give
+					<PaperPlaneTilt size={16} weight="regular" className="size-4 self-center" />{' '}
+					Give
 				</span>
 				{
 					' ' /* manually added so that the breaks between Give and Feedback, not between the icon and Give. */
