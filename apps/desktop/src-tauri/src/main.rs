@@ -15,7 +15,7 @@ use sd_fda::DiskAccess;
 use serde::{Deserialize, Serialize};
 use specta_typescript::Typescript;
 use tauri::{async_runtime::block_on, webview::PlatformWebview, AppHandle, Manager, WindowEvent};
-use tauri::{Emitter, Listener};
+use tauri::{Emitter, Listener, LogicalSize};
 use tauri_plugins::{sd_error_plugin, sd_server_plugin};
 use tauri_specta::{collect_events, Builder};
 use tokio::task::block_in_place;
@@ -40,6 +40,36 @@ async fn app_ready(app_handle: AppHandle) {
 // If this errors, we don't have FDA and we need to re-prompt for it
 async fn request_fda_macos() {
 	DiskAccess::request_fda().expect("Unable to request full disk access");
+}
+
+// These window size commands don't work.
+// We should figure out how to properly lock
+// the size during onboarding. ~ilynxcat 2024/nov/14
+#[tauri::command(async)]
+#[specta::specta]
+async fn set_window_size(window: tauri::Window, width: u32, height: u32) {
+	window
+		.set_size(tauri::Size::from(LogicalSize::new(width, height)))
+		.unwrap();
+}
+
+#[tauri::command(async)]
+#[specta::specta]
+async fn set_fixed_window_size(window: tauri::Window, width: u32, height: u32) {
+	set_window_size(window.clone(), width, height).await;
+	window
+		.set_min_size(Some(LogicalSize::new(width, height)))
+		.unwrap();
+	window
+		.set_max_size(Some(LogicalSize::new(width, height)))
+		.unwrap();
+}
+
+#[tauri::command(async)]
+#[specta::specta]
+async fn unset_fixed_window_size(window: tauri::Window) {
+	window.set_max_size(None::<tauri::Size>).unwrap();
+	window.set_min_size(None::<tauri::Size>).unwrap();
 }
 
 #[tauri::command(async)]
@@ -199,6 +229,9 @@ async fn main() -> tauri::Result<()> {
 			reload_webview,
 			set_menu_bar_item_state,
 			request_fda_macos,
+			set_window_size,
+			set_fixed_window_size,
+			unset_fixed_window_size,
 			open_trash_in_os_explorer,
 			file::open_file_paths,
 			file::open_ephemeral_files,

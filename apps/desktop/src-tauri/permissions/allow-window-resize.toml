@@ -1,0 +1,4 @@
+[[set]]
+description = "Allow the window to be resized by the Spacedrive interface app itself."
+identifier  = "window-size"
+permissions = ["window:allow-set-size"]

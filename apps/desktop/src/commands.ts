@@ -41,6 +41,15 @@ export const commands = {
 	async requestFdaMacos(): Promise<void> {
 		await TAURI_INVOKE('request_fda_macos');
 	},
+	async setWindowSize(width: number, height: number): Promise<void> {
+		await TAURI_INVOKE('set_window_size', { width, height });
+	},
+	async setFixedWindowSize(width: number, height: number): Promise<void> {
+		await TAURI_INVOKE('set_fixed_window_size', { width, height });
+	},
+	async unsetFixedWindowSize(): Promise<void> {
+		await TAURI_INVOKE('unset_fixed_window_size');
+	},
 	async openTrashInOsExplorer(): Promise<Result<null, null>> {
 		try {
 			return { status: 'ok', data: await TAURI_INVOKE('open_trash_in_os_explorer') };

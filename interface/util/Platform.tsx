@@ -73,6 +73,9 @@ export type Platform = {
 	};
 	auth: auth.ProviderConfig;
 	landingApiOrigin: string;
+	setWindowSize?(width: number, height: number): Promise<void>;
+	setFixedWindowSize?(width: number, height: number): Promise<void>;
+	unsetFixedWindowSize?(): Promise<void>;
 };
 
 export type Update = { version: string };
