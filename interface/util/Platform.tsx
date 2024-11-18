@@ -52,7 +52,7 @@ export type Platform = {
 			| { Ephemeral: { path: string } }
 		)[]
 	): Promise<unknown>;
-	requestFdaMacos?(): void;
+	requestFdaMacos?(): Promise<Result<null, string>>;
 	getFilePathOpenWithApps?(
 		library: string,
 		ids: number[]

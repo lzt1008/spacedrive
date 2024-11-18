@@ -43,6 +43,23 @@ function constructServerUrl(urlSuffix: string) {
 	return hr.get(urlSuffix) + urlSuffix + queryParams;
 }
 
+// Create a type-safe wrapper around commands
+const typedCommands: Partial<Platform> = {
+	...commands,
+	setWindowSize: async (width: number, height: number) => {
+		await commands.setWindowSize(width, height);
+	},
+	setFixedWindowSize: async (width: number, height: number) => {
+		await commands.setFixedWindowSize(width, height);
+	},
+	unsetFixedWindowSize: async () => {
+		await commands.unsetFixedWindowSize();
+	},
+	setWindowResizable: async (resizable: boolean) => {
+		await commands.setWindowResizable(resizable);
+	}
+};
+
 export const platform = {
 	platform: 'tauri',
 	getThumbnailUrlByThumbKey: (thumbKey) =>
@@ -87,6 +104,6 @@ export const platform = {
 			return shellOpen(url);
 		}
 	},
-	...commands,
+	...typedCommands,
 	landingApiOrigin: env.VITE_LANDING_ORIGIN
 } satisfies Omit<Platform, 'updater'>;

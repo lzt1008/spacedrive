@@ -40,13 +40,29 @@ impl DiskAccess {
 		{
 			use crate::error::Error;
 			use std::process::Command;
+			use tracing::{debug, error};
 
-			Command::new("open")
+			debug!("Requesting Full Disk Access on macOS");
+			match Command::new("open")
 				.arg("x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles")
 				.status()
-				.map_err(|_| Error::FDAPromptError)?;
+			{
+				Ok(status) if status.success() => {
+					debug!("Successfully opened FDA preferences");
+					Ok(())
+				}
+				Ok(status) => {
+					error!("FDA request failed with status: {}", status);
+					Err(Error::FDAPromptError)
+				}
+				Err(e) => {
+					error!("FDA request failed: {}", e);
+					Err(Error::FDAPromptError)
+				}
+			}
 		}
 
+		#[cfg(not(target_os = "macos"))]
 		Ok(())
 	}
 }
