@@ -327,6 +327,7 @@
   "general_shortcut_description": "General usage shortcuts",
   "generate_checksums": "Generate Checksums",
   "generate_preview_media_label": "Generate preview media for this Location",
+  "get_started": "Get started",
   "gitignore": "Git Ignore",
   "glob_description": "Glob (e.g., **/.git)",
   "go_back": "Go Back",

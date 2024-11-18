@@ -31,10 +31,10 @@ export default function OnboardingNewLibrary() {
 					<Button
 						type="submit"
 						variant="accent"
-						size="sm"
+						size="onboardingFixed"
 						disabled={!form.formState.isValid}
 					>
-						{t('create_a_library')}
+						{t('continue')}
 					</Button>
 				}
 			>

@@ -5,16 +5,18 @@ import { usePlatform } from '~/util/Platform';
 
 import { OnboardingLayout } from './components';
 import BetaNotice from './components/beta-notice';
-import { OnboardingCustomLeftSection } from './components/left-section';
+import { OnboardingLeftSection } from './components/left-section';
 
 export default function OnboardingPreRelease() {
 	const { t } = useLocale();
 
 	return (
 		<OnboardingLayout
+			// the ball's fill is blown up to screen size here, pretty colors!
 			customBackground="radial-gradient(95.31% 122.51% at 50% 99.93%, #FF8AF3 0%, rgba(236, 0, 255, 0.00) 100%), linear-gradient(40deg, #4203FF 32.36%, #4E07F9 43.19%, #B521D1 67.63%, #FF429F 80.78%), #111116"
 			leftSection={
-				<OnboardingCustomLeftSection
+				<OnboardingLeftSection
+					kind="customContent"
 					className="noise noise-strong bg-gradient-to-b from-[#16161D]/45 to-[#111116]/70"
 					style={{ backgroundBlendMode: 'overlay' }}
 					top={
@@ -31,8 +33,8 @@ export default function OnboardingPreRelease() {
 				/>
 			}
 			actions={
-				<ButtonLink to="../new-library" replace variant="accent">
-					{t('continue')}
+				<ButtonLink to="../new-library" replace variant="accent" size="onboardingFixed">
+					{t('get_started')}
 				</ButtonLink>
 			}
 		>

@@ -26,7 +26,7 @@ const hasHref = (props: ButtonProps | LinkButtonProps): props is LinkButtonProps
 
 export const buttonStyles = cva(
 	[
-		'cursor-default items-center rounded-md border font-plex font-semibold tracking-wide outline-none transition-colors duration-100',
+		'cursor-default items-center rounded-md border font-sans font-semibold tracking-wide outline-none transition-colors duration-100',
 		'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-70',
 		'focus:ring-none focus:ring-offset-none ring-offset-app-box'
 	],
@@ -34,10 +34,11 @@ export const buttonStyles = cva(
 		variants: {
 			size: {
 				icon: '!p-1',
-				lg: 'text-md px-3 py-1.5 font-medium',
-				md: 'px-2.5 py-1.5 text-sm font-medium',
-				sm: 'px-2 py-1 text-sm font-medium',
-				xs: 'px-1.5 py-0.5 text-xs font-normal'
+				lg: 'text-md px-3 py-1.5 font-semibold',
+				md: 'px-2.5 py-1.5 text-sm font-semibold',
+				sm: 'px-2 py-1 text-sm font-semibold',
+				xs: 'px-1.5 py-0.5 text-xs font-normal',
+				onboardingFixed: 'w-28 py-2 text-sm font-semibold'
 			},
 			variant: {
 				default: [
@@ -51,14 +52,14 @@ export const buttonStyles = cva(
 					'border-sidebar-line/60 hover:border-sidebar-line active:border-sidebar-line/30'
 				],
 				dotted: [
-					`rounded border border-dashed border-sidebar-line/70 text-center text-xs font-medium text-ink-faint transition hover:border-sidebar-line hover:bg-sidebar-selected/5`
+					`rounded border border-dashed border-sidebar-line/70 text-center text-xs text-ink-faint transition hover:border-sidebar-line hover:bg-sidebar-selected/5`
 				],
 				gray: [
 					'bg-app-button hover:bg-app-hover focus:bg-app-selected',
 					'border-app-line hover:border-app-line focus:ring-1 focus:ring-accent'
 				],
 				accent: [
-					'border border-accent bg-accent text-white shadow-md shadow-app-shade/10 hover:bg-accent-faint focus:outline-none',
+					'border border-white/30 bg-gradient-to-b from-[#2C8BFA] to-[#0B63CB] text-white shadow-md shadow-app-shade/10 hover:opacity-90',
 					'focus:ring-1 focus:ring-accent focus:ring-offset-2 focus:ring-offset-app-selected'
 				],
 				colored: ['text-white shadow-sm hover:bg-opacity-90 active:bg-opacity-100'],
@@ -97,6 +98,8 @@ export const ButtonLink = forwardRef<
 	return (
 		<Link
 			ref={ref}
+			// without this, users can drag from the button and it brings the hyperlink with it
+			draggable={false}
 			className={buttonStyles({
 				size,
 				variant,

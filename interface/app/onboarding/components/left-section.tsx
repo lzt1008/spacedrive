@@ -5,56 +5,51 @@ import DebugPopover from '~/app/$libraryId/Layout/Sidebar/DebugPopover';
 
 import { PrivacyDisclosure, PrivacyDisclosureInfo } from './privacy-disclosure';
 
-type OnboardingLeftSectionProps = {
+interface OnboardingLeftSectionBaseProps {
+	className?: string;
+	style?: React.CSSProperties;
+}
+
+type DefaultVariantProps = OnboardingLeftSectionBaseProps & {
+	kind: 'default';
 	title: string;
 	description: string;
 	privacyInfo?: PrivacyDisclosureInfo;
-	actions?: ReactNode;
 };
 
-type OnboardingCustomLeftSectionProps = {
-	className?: string;
-	style?: React.CSSProperties;
+type CustomContentVariantProps = OnboardingLeftSectionBaseProps & {
+	kind: 'customContent';
 	top: ReactNode;
 	bottom: ReactNode;
 };
 
-export const OnboardingCustomLeftSection = (props: OnboardingCustomLeftSectionProps) => {
+export type OnboardingLeftSectionProps = DefaultVariantProps | CustomContentVariantProps;
+
+export const OnboardingLeftSection = (props: OnboardingLeftSectionProps) => {
 	const debugState = useDebugState();
-	const { className, style, top, bottom } = props;
+	const { className, style } = props;
 
 	return (
 		<LeftSectionWrapper className={className} style={style}>
 			<div className="flex h-full flex-col">
-				<div className="grow">{top}</div>
-				<div>{bottom}</div>
-			</div>
-			{debugState.enabled && (
-				<div className="absolute bottom-1 left-1">
-					<DebugPopover />
-				</div>
-			)}
-		</LeftSectionWrapper>
-	);
-};
-
-export const OnboardingLeftSection = (props: OnboardingLeftSectionProps) => {
-	const debugState = useDebugState();
-	const { title, description, privacyInfo } = props;
-
-	return (
-		<LeftSectionWrapper>
-			<div className="flex h-full flex-col">
-				<div className="flex min-h-0 shrink-0 grow flex-col gap-y-6 overflow-y-scroll">
-					<h1 className="font-plex text-2xl font-bold leading-8 tracking-[-0.02em] text-white">
-						{title}
-					</h1>
-					<p className="whitespace-pre-line text-base leading-[1.4] tracking-[0.02em] text-ink/80">
-						{description}
-					</p>
-				</div>
-
-				{privacyInfo && <PrivacyDisclosure {...privacyInfo} />}
+				{props.kind === 'default' ? (
+					<>
+						<div className="flex min-h-0 shrink-0 grow flex-col gap-y-6 overflow-y-scroll">
+							<h1 className="font-plex text-2xl font-bold leading-8 tracking-[-0.02em] text-white">
+								{props.title}
+							</h1>
+							<p className="whitespace-pre-line text-base leading-[1.4] tracking-[0.02em] text-ink/80">
+								{props.description}
+							</p>
+						</div>
+						{props.privacyInfo && <PrivacyDisclosure {...props.privacyInfo} />}
+					</>
+				) : (
+					<>
+						<div className="grow">{props.top}</div>
+						<div>{props.bottom}</div>
+					</>
+				)}
 			</div>
 			{debugState.enabled && (
 				<div className="absolute bottom-1 left-1">

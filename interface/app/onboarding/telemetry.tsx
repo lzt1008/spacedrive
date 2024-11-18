@@ -30,7 +30,7 @@ export default function OnboardingTelemetry() {
 					<Button
 						type="submit"
 						variant="accent"
-						size="sm"
+						size="onboardingFixed"
 						disabled={
 							!['full', 'minimal', 'none'].includes(form.watch('shareTelemetry'))
 						}

@@ -40,12 +40,12 @@ export const FullDisk = () => {
 				<>
 					<Button
 						variant="default"
-						size="sm"
+						size="onboardingFixed"
 						onClick={() => navigate('../locations', { replace: true })}
 					>
 						{t('maybe_later')}
 					</Button>
-					<Button variant="accent" size="sm" onClick={requestFdaMacos}>
+					<Button variant="accent" size="onboardingFixed" onClick={requestFdaMacos}>
 						Continue
 					</Button>
 				</>

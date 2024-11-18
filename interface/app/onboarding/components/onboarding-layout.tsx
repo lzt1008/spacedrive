@@ -95,6 +95,7 @@ export function OnboardingLayout(props: OnboardingLayoutProps) {
 					leftSection
 				) : (
 					<OnboardingLeftSection
+						kind="default"
 						title={title!}
 						description={description!}
 						privacyInfo={privacy!}

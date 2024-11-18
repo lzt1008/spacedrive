@@ -40,7 +40,7 @@ export default function OnboardingLogin() {
 							to="../new-library"
 							replace
 							variant="accent"
-							size="md"
+							size="onboardingFixed"
 							className="text-center"
 						>
 							{t('continue')}

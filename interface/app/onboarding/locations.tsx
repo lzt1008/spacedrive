@@ -104,7 +104,7 @@ export default function OnboardingLocations() {
 						<Button
 							type="button"
 							variant="default"
-							size="sm"
+							size="onboardingFixed"
 							onClick={() => navigate('../telemetry', { replace: true })}
 						>
 							{t('do_this_later')}
@@ -112,7 +112,7 @@ export default function OnboardingLocations() {
 						<Button
 							type="submit"
 							variant="accent"
-							size="sm"
+							size="onboardingFixed"
 							disabled={!Object.values(locations).some(Boolean)}
 						>
 							{t('continue')}
