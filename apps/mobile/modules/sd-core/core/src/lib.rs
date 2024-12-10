@@ -66,6 +66,12 @@ pub fn handle_core_msg(
 	data_dir: String,
 	callback: impl FnOnce(Result<String, String>) + Send + 'static,
 ) {
+	// Initalize Event Sender if it hasn't been already
+	let _ = EVENT_SENDER.get_or_init(|| {
+		let (tx, _) = mpsc::channel(100);
+		tx
+	});
+
 	RUNTIME.spawn(async move {
 		let (node, router) = {
 			let node = &mut *NODE.lock().await;
