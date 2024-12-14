@@ -1,5 +1,5 @@
 import { Grid, useGrid } from '@virtual-grid/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useExplorerLayoutStore } from '@sd/client';
 
 import { useExplorerContext } from '../../Context';
@@ -23,6 +23,16 @@ export const GridView = () => {
 	const itemHeight = explorerSettings.gridItemSize + itemDetailsHeight;
 
 	const BOTTOM_PADDING = layoutStore.showTags ? 16 : 12;
+	const { virtualizedHelpers } = explorer;
+	const scrollTop = explorer.scrollRef.current?.scrollTop ?? 0;
+
+	useEffect(() => {
+		if (!virtualizedHelpers || !explorer.scrollRef.current) return;
+
+		const visibleRange = virtualizedHelpers.getVisibleRange(scrollTop);
+		virtualizedHelpers.prefetchPages(visibleRange.startPage, visibleRange.endPage);
+	}, [scrollTop, virtualizedHelpers]);
+
 	const grid = useGrid({
 		scrollRef: explorer.scrollRef,
 		count: explorer.items?.length ?? 0,
@@ -48,6 +58,20 @@ export const GridView = () => {
 	});
 
 	useKeySelection(grid, { scrollToEnd: true });
+
+	useEffect(() => {
+		if (!virtualizedHelpers || !explorer.scrollRef.current) return;
+		
+		const handleScroll = () => {
+			const scrollTop = explorer.scrollRef.current?.scrollTop ?? 0;
+			const visibleRange = virtualizedHelpers.getVisibleRange(scrollTop);
+			virtualizedHelpers.prefetchPages(visibleRange.startPage, visibleRange.endPage);
+		};
+
+		const scrollElement = explorer.scrollRef.current;
+		scrollElement.addEventListener('scroll', handleScroll);
+		return () => scrollElement.removeEventListener('scroll', handleScroll);
+	}, [virtualizedHelpers]);
 
 	return (
 		<DragSelect

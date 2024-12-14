@@ -70,17 +70,38 @@ export const ListView = memo(() => {
 		rows: rowsById
 	});
 
+	const { virtualizedHelpers } = explorer;
+	const scrollTop = explorer.scrollRef.current?.scrollTop ?? 0;
+
+	useEffect(() => {
+		if (!virtualizedHelpers || !explorer.scrollRef.current) return;
+
+		const visibleRange = virtualizedHelpers.getVisibleRange(scrollTop);
+		virtualizedHelpers.prefetchPages(visibleRange.startPage, visibleRange.endPage);
+	}, [scrollTop, virtualizedHelpers]);
+
 	const rowVirtualizer = useVirtualizer({
-		count: !explorer.count ? rows.length : Math.max(rows.length, explorer.count),
-		getScrollElement: useCallback(() => explorer.scrollRef.current, [explorer.scrollRef]),
+		count: rows.length,
+		getScrollElement: () => explorer.scrollRef.current,
 		estimateSize: useCallback(() => ROW_HEIGHT, []),
-		paddingStart: TABLE_PADDING_Y,
-		paddingEnd: TABLE_PADDING_Y + (explorerView.scrollPadding?.bottom ?? 0),
-		scrollMargin: listOffset,
-		overscan: explorer.overscan ?? 10,
-		scrollPaddingStart: explorerView.scrollPadding?.top,
-		scrollPaddingEnd: TABLE_HEADER_HEIGHT + (explorerView.scrollPadding?.bottom ?? 0)
+		overscan: 5,
+		scrollMargin: top + TABLE_HEADER_HEIGHT,
+		scrollPadding: explorerView.scrollPadding?.bottom ?? 0
 	});
+
+	useEffect(() => {
+		if (!virtualizedHelpers || !explorer.scrollRef.current) return;
+		
+		const handleScroll = () => {
+			const scrollTop = explorer.scrollRef.current?.scrollTop ?? 0;
+			const visibleRange = virtualizedHelpers.getVisibleRange(scrollTop);
+			virtualizedHelpers.prefetchPages(visibleRange.startPage, visibleRange.endPage);
+		};
+
+		const scrollElement = explorer.scrollRef.current;
+		scrollElement.addEventListener('scroll', handleScroll);
+		return () => scrollElement.removeEventListener('scroll', handleScroll);
+	}, [virtualizedHelpers]);
 
 	const virtualRows = rowVirtualizer.getVirtualItems();
 

@@ -21,6 +21,7 @@ import { explorerStore } from './store';
 import { useKeyRevealFinder } from './useKeyRevealFinder';
 import { ExplorerViewProps, View } from './View';
 import { EmptyNotice } from './View/EmptyNotice';
+import { VirtualizationDebugPanel } from './VirtualizationDebugPanel';
 
 import 'react-slidedown/lib/slidedown.css';
 
@@ -92,18 +93,11 @@ export default function Explorer(props: PropsWithChildren<Props>) {
 		<>
 			<ExplorerContextMenu>
 				<div
+					className={clsx(
+						'relative flex h-full flex-grow flex-col',
+						!isWindows && 'scrollbar-thin'
+					)}
 					ref={explorer.scrollRef}
-					className="explorer-scroll explorer-inspector-scroll flex flex-1 flex-col overflow-x-hidden"
-					style={
-						{
-							'--scrollbar-width': isWindows ? '10px' : '6px',
-							'--scrollbar-height': isWindows ? '10px' : '6px',
-							'--scrollbar-margin-top': `${topBar.topBarHeight}px`,
-							'--scrollbar-margin-bottom': `${showPathBar ? PATH_BAR_HEIGHT + (showTagBar ? TAG_BAR_HEIGHT : 0) : 0}px`,
-							'paddingTop': topBar.topBarHeight,
-							'paddingRight': showInspector ? INSPECTOR_WIDTH : 0
-						} as CSSProperties
-					}
 				>
 					{explorer.items && explorer.items.length > 0 && <DismissibleNotice />}
 
@@ -125,6 +119,7 @@ export default function Explorer(props: PropsWithChildren<Props>) {
 								: undefined
 						}}
 					/>
+					<VirtualizationDebugPanel />
 				</div>
 			</ExplorerContextMenu>
 
